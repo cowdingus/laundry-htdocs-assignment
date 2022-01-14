@@ -7,7 +7,7 @@ function list_table($mysqli_result)
 			<tr>
 					<th> # </th>
 				<?php foreach (mysqli_fetch_fields($mysqli_result) as $field): if ($field->name === "id") continue; ?>
-					<th scope="col"> <?= ucfirst($field->name) ?> </th>
+					<th scope="col"> <?= ucwords(str_replace("_", " ", $field->name)) ?> </th>
 				<?php endforeach; ?>
 					<th> Aksi </th>
 			</tr>
