@@ -3,6 +3,7 @@ require_once "../utility/utils.php";
 require_once "../koneksi.php";
 require_once "../components/radio_button.php";
 require_once "../components/bootstrap.php";
+require_once "../components/navbar.php";
 
 if ($_POST) {
 	$id = $_POST["id"];
@@ -67,26 +68,30 @@ if ($_GET) {
 	<title>Edit Paket</title>
 </head>
 
-<body class="crud-form">
-	<h1>Edit Paket</h1>
-	<form action="edit.php" method="POST">
-		<input type="text" name="id" value="<?= $id ?>" hidden>
-		<fieldset class="form-group">
-			<legend>Harga</legend>
-			<input class="form-control" type="text" name="harga" value="<?= $harga ?>">
-		</fieldset>
-		<br>
-		<fieldset class="form-group">
-			<legend>Jenis Paket</legend>
-			<?php
-			radio_button("jenis", "kiloan", $jenis === "kiloan");
-			radio_button("jenis", "selimut", $jenis === "selimut");
-			radio_button("jenis", "bed_cover", $jenis === "bed_cover");
-			radio_button("jenis", "kaos", $jenis === "kaos");
-			?>
-		</fieldset>
-		<input type="submit" style="margin-top: 1rem">
-	</form>
+<body>
+	<?php navbar(); ?>
+
+	<main class="crud-form">
+		<h1>Edit Paket</h1>
+		<form action="edit.php" method="POST">
+			<input type="text" name="id" value="<?= $id ?>" hidden>
+			<fieldset class="form-group">
+				<legend>Harga</legend>
+				<input class="form-control" type="text" name="harga" value="<?= $harga ?>">
+			</fieldset>
+			<br>
+			<fieldset class="form-group">
+				<legend>Jenis Paket</legend>
+				<?php
+				radio_button("jenis", "kiloan", $jenis === "kiloan");
+				radio_button("jenis", "selimut", $jenis === "selimut");
+				radio_button("jenis", "bed_cover", $jenis === "bed_cover");
+				radio_button("jenis", "kaos", $jenis === "kaos");
+				?>
+			</fieldset>
+			<button type="submit" class="btn btn-primary mt-3">Submit</button>
+		</form>
+	</main>
 
 	<?php bootstrap_js(); ?>
 </body>

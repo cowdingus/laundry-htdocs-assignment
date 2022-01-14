@@ -1,4 +1,7 @@
-<?php require_once "../components/bootstrap.php" ?>
+<?php
+require_once "../components/bootstrap.php";
+require_once "../components/navbar.php";
+?>
 
 <!DOCTYPE html>
 <html>
@@ -12,19 +15,25 @@
 	<title>List Paket</title>
 </head>
 
-<body class="crud-form">
-	<h1>List Paket</h1>
+<body>
 
-	<a href="tambah.php" class="btn btn-primary" id="add-anchor">+ Tambah Paket</a>
+	<?php navbar(); ?>
 
-	<?php
+	<main class="crud-form">
+		<h1>List Paket</h1>
+
+		<a href="tambah.php" class="btn btn-primary" id="add-anchor">+ Tambah Paket</a>
+
+		<?php
 		require_once "../components/list_table.php";
 		require_once "../koneksi.php";
 
 		$query = mysqli_query($conn, "SELECT * FROM `paket`");
 
 		list_table($query);
-	?>
+		?>
+
+	</main>
 
 	<?php bootstrap_js(); ?>
 
