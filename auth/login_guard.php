@@ -10,9 +10,43 @@ function ensure_logon() {
 }
 
 /* Prevents user with $role access to current page */
-function prevent_page_access($role) {
-	if ($_SESSION['role'] === $role) {
-		redirectTo("/login.php");
-		exit();
+function redirectToLogin() {
+	redirectTo("/login.php");
+	exit();
+}
+
+function prevent_page_access($roles) {
+	session_start();
+	if (gettype($roles) === "array") {
+		foreach($roles as $role) {
+			if ($_SESSION['role'] === $role) {
+				redirectToLogin();
+			}
+		}
+	} else {
+		if ($_SESSION['role'] === $roles) {
+			redirectToLogin();
+		}
+	}
+}
+
+function allow_page_access_exclusive($roles) {
+	session_start();
+	$ok = false;
+
+	if (gettype($roles) === "array") {
+		foreach($roles as $role) {
+			if ($_SESSION['role'] === $role) {
+				$ok = true;
+			}
+		}
+	} else {
+		if ($_SESSION['role'] === $roles) {
+			$ok = true;
+		}
+	}
+
+	if (!$ok) {
+		redirectToLogin();
 	}
 }

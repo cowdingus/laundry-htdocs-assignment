@@ -1,4 +1,8 @@
 <?php
+require_once "../auth/login_guard.php";
+
+allow_page_access_exclusive(["admin", "kasir"]);
+
 require_once "../components/bootstrap.php";
 require_once "../components/navbar.php";
 ?>

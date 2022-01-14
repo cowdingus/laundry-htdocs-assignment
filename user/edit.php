@@ -1,4 +1,8 @@
 <?php
+require_once "../auth/login_guard.php";
+
+allow_page_access_exclusive("admin");
+
 require_once "../utility/utils.php";
 require_once "../koneksi.php";
 require_once "../components/radio_button.php";

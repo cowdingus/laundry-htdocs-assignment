@@ -1,6 +1,6 @@
 <?php
 require_once "auth/login_guard.php";
 
-ensure_logon();
+allow_page_access_exclusive(["admin", "kasir", "owner"]);
 
 var_dump($_SESSION);
