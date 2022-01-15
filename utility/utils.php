@@ -35,4 +35,8 @@ function redirectTo($url) {
 	header("Location: $url");
 	die();
 }
+
+function titleize($name) {
+	return ucwords(str_replace("_", " ", $name));
+}
 ?>
