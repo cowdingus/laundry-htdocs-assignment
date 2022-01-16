@@ -5,6 +5,27 @@ allow_page_access_exclusive(["admin", "kasir"]);
 
 require_once "../components/bootstrap.php";
 require_once "../components/navbar.php";
+
+function extract_member_name_from_id($id) {
+	global $conn;
+
+	$query = mysqli_query($conn, "SELECT nama FROM member WHERE id = $id");
+
+	$data_member = mysqli_fetch_assoc($query);
+
+	return $data_member["nama"];
+}
+
+function extract_user_name_from_id($id) {
+	global $conn;
+
+	$query = mysqli_query($conn, "SELECT nama FROM user WHERE id = $id");
+
+	$data_member = mysqli_fetch_assoc($query);
+
+	return $data_member["nama"];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +55,7 @@ require_once "../components/navbar.php";
 
 		$query = mysqli_query($conn, "SELECT * FROM `transaksi`");
 
-		list_table($query);
+		list_table($query, ["id_member" => "extract_member_name_from_id", "id_user" => "extract_user_name_from_id"]);
 		?>
 
 	</main>

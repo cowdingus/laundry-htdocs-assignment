@@ -21,6 +21,9 @@ require_once "components/navbar.php";
 		<main class="flex-grow-1 container-fluid">
 			<div class="row h-100">
 				<div class="col-md-8 d-none d-md-block">
+					<div class="d-flex justify-content-center align-items-center h-100">
+						<img src="/assets/undraw_login_re_4vu2.svg" alt="" width="400">
+					</div>
 				</div>
 				<div class="col-md border-start d-flex justify-content-center">
 					<form action="auth/auth.php" method="POST" class="align-self-center w-75">
