@@ -4,7 +4,7 @@ function extract_as_table_data($data, $converters = null)
 	foreach ($data as $key => $value) {
 		if ($key === "id") continue;
 
-		$content = isset($converters[$key]) ? $converters[$key]($value) : $value;
+		$content = isset($converters[$key]) ? $converters[$key]($value) : titleize($value);
 ?>
 		<td><?= $content ?></td>
 	<?php
