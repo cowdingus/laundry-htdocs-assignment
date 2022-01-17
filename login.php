@@ -11,7 +11,7 @@ require_once "components/navbar.php";
 
 	<?php bootstrap_css(); ?>
 
-	<title>List User</title>
+	<title>Login</title>
 </head>
 
 <body>
