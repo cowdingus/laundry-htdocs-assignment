@@ -53,7 +53,7 @@ function extract_user_name_from_id($id) {
 		require_once "../components/list_table.php";
 		require_once "../koneksi.php";
 
-		$query = mysqli_query($conn, "SELECT t.id, m.nama as nama_member, t.tgl, t.batas_waktu, t.tgl_bayar, t.status, t.dibayar, u.nama as nama_user FROM transaksi t, member m, user u WHERE t.id_member = m.id AND t.id_user = u.id;");
+		$query = mysqli_query($conn, "SELECT t.id, m.nama as nama_member, t.tgl, t.batas_waktu, t.tgl_bayar, t.status, t.dibayar, u.nama as nama_kasir, p.jenis as paket, p.harga * d_t.qty as total FROM transaksi t, detail_transaksi d_t, paket p, member m, user u WHERE t.id_member = m.id AND t.id_user = u.id AND t.id = d_t.id_transaksi AND p.id = d_t.id_paket");
 
 		list_table($query);
 		?>

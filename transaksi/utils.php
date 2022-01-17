@@ -27,3 +27,17 @@ function render_as_radio_buttons($name, $keys, $selected_key = null)
 <?php
 	}
 }
+
+function render_paket_as_select_options($selected_id = null) {
+	global $conn;
+
+	$query = mysqli_query($conn, "SELECT * FROM `paket`");
+
+	while ($data_paket = mysqli_fetch_assoc($query)) {
+		?>
+			<option value="<?= $data_paket['id']?>" <?= $selected_id === $data_paket['id'] ? "selected" : "" ?>>
+				<?= titleize($data_paket['jenis']) . " @" . $data_paket['harga'] ?>
+			</option>
+		<?php
+	}
+}

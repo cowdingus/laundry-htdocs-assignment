@@ -57,6 +57,16 @@ require_once "utils.php";
 					<?php render_as_radio_buttons("dibayar", ["dibayar", "belum_dibayar"]) ?>
 				</label>
 			</div>
+			<div class="mb-3">
+				<label for="paket-input" class="form-label">Paket</label>
+				<select class="form-select" aria-label="Pilih paket" id="paket-input" name="id_paket">
+					<?php render_paket_as_select_options(); ?>
+				</select>
+			</div>
+			<div class="mb-3">
+				<label for="qty-input" class="form-label">Qty</label>
+				<input type="number" class="form-control" id="qty-input" name="qty" min="0">
+			</div>
 			<input type="text" name="id_user" value="<?= $_SESSION['id'] ?>" hidden>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
@@ -80,20 +90,27 @@ if ($_POST) {
 	$tgl_bayar = $_POST["tgl_bayar"];
 	$status = $_POST["status"];
 	$dibayar = $_POST["dibayar"];
+	$id_paket = $_POST["id_paket"];
+	$qty = $_POST["qty"];
 
 	$paramsIsValid = checkParams(
-		[$id_member, $id_user, $tgl, $batas_waktu, $tgl_bayar, $status, $dibayar],
-		["ID Member", "ID User", "Tanggal", "Batas Waktu", "Tanggal Bayar", "Status", "Dibayar"]
+		[$id_member, $id_user, $tgl, $batas_waktu, $tgl_bayar, $status, $dibayar, $id_paket, $qty],
+		["ID Member", "ID User", "Tanggal", "Batas Waktu", "Tanggal Bayar", "Status", "Dibayar", "ID Paket", "Qty"]
 	);
 
 	if (!$paramsIsValid) {
 		exit();
 	}
 
-	$query = mysqli_query($conn, "INSERT INTO transaksi (id_member, id_user, tgl, batas_waktu, tgl_bayar, status, dibayar) VALUES
+	$query_transaksi = mysqli_query($conn, "INSERT INTO transaksi (id_member, id_user, tgl, batas_waktu, tgl_bayar, status, dibayar) VALUES
 		('$id_member', '$id_user', '$tgl', '$batas_waktu', '$tgl_bayar', '$status', '$dibayar')");
 
-	if ($query) {
+	$id_transaksi = mysqli_insert_id($conn);
+
+	$query_detail_transaksi = mysqli_query($conn, "INSERT INTO detail_transaksi (id_transaksi, id_paket, qty) VALUES
+		('$id_transaksi', '$id_paket', '$qty')");
+
+	if ($query_transaksi && $query_detail_transaksi) {
 		warn("Berhasil menambahkan paket");
 		redirectTo("index.php");
 	} else {

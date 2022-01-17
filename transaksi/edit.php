@@ -19,17 +19,19 @@ if ($_POST) {
 	$tgl_bayar = $_POST["tgl_bayar"];
 	$status = $_POST["status"];
 	$dibayar = $_POST["dibayar"];
+	$id_paket = $_POST["id_paket"];
+	$qty = $_POST["qty"];
 
 	$paramsIsValid = checkParams(
-		[$id, $id_member, $id_user, $tgl, $batas_waktu, $tgl_bayar, $status, $dibayar],
-		["ID Transaksi", "ID Member", "ID User", "Tanggal", "Batas Waktu", "Tanggal Bayar", "Status", "Dibayar"]
+		[$id, $id_member, $id_user, $tgl, $batas_waktu, $tgl_bayar, $status, $dibayar, $id_paket, $qty],
+		["ID Transaksi", "ID Member", "ID User", "Tanggal", "Batas Waktu", "Tanggal Bayar", "Status", "Dibayar", "ID Paket", "Qty"]
 	);
 
 	if (!$paramsIsValid) {
 		exit();
 	}
 
-	$query = mysqli_query($conn, "
+	$query_transaksi = mysqli_query($conn, "
 		UPDATE `transaksi` SET
 		id_member = '$id_member',
 		id_user = '$id_user',
@@ -40,7 +42,14 @@ if ($_POST) {
 		dibayar = '$dibayar'
 		WHERE id = $id");
 
-	if ($query) {
+	$query_detail_transaksi = mysqli_query($conn, "
+		UPDATE `detail_transaksi` SET
+		id_paket = '$id_paket',
+		qty = '$qty'
+		WHERE id_transaksi = $id
+	");
+
+	if ($query_transaksi && $query_detail_transaksi) {
 		warn("Berhasil mengedit transaksi");
 		redirectTo("/transaksi/index.php");
 	} else {
@@ -61,14 +70,16 @@ if ($_GET) {
 		exit();
 	}
 
-	$query = mysqli_query($conn, "SELECT * FROM `transaksi` WHERE id = $id");
+	$query_transaksi = mysqli_query($conn, "SELECT * FROM `transaksi` WHERE id = $id");
+	$query_detail_transaksi = mysqli_query($conn, "SELECT * FROM `detail_transaksi` WHERE id_transaksi = $id");
 
-	if (!$query) {
+	if (!$query_transaksi || !$query_detail_transaksi) {
 		warn("Transaksi with ID of " . $id . "is not found");
 		die();
 	}
 
-	$data_transaksi = mysqli_fetch_array($query);
+	$data_transaksi = mysqli_fetch_assoc($query_transaksi);
+	$data_detail_transaksi = mysqli_fetch_assoc($query_detail_transaksi);
 
 	$id_member = $data_transaksi["id_member"];
 	$id_user = $data_transaksi["id_user"];
@@ -77,6 +88,8 @@ if ($_GET) {
 	$tgl_bayar = $data_transaksi["tgl_bayar"];
 	$status = $data_transaksi["status"];
 	$dibayar = $data_transaksi["dibayar"];
+	$id_paket = $data_detail_transaksi["id_paket"];
+	$qty = $data_detail_transaksi["qty"];
 } else {
 	warn("No ID specified");
 	die();
@@ -129,6 +142,16 @@ if ($_GET) {
 				<label>Dibayar
 					<?php render_as_radio_buttons("dibayar", ["dibayar", "belum_dibayar"], $dibayar) ?>
 				</label>
+			</div>
+			<div class="mb-3">
+				<label for="paket-input" class="form-label">Paket</label>
+				<select class="form-select" aria-label="Pilih paket" id="paket-input" name="id_paket">
+					<?php render_paket_as_select_options($id_paket); ?>
+				</select>
+			</div>
+			<div class="mb-3">
+				<label for="qty-input" class="form-label">Qty</label>
+				<input type="number" class="form-control" id="qty-input" name="qty" min="0" value="<?= $qty ?>">
 			</div>
 			<input type="text" name="id_user" value="<?= $_SESSION['id'] ?>" hidden>
 			<button type="submit" class="btn btn-primary">Submit</button>
