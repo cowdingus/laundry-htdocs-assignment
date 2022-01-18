@@ -28,6 +28,9 @@ function navbar()
 						<a class="nav-link" href="/paket">Paket</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="/outlet">Outlet</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="/transaksi">Transaksi</a>
 					</li>
 					<li class="nav-item">
