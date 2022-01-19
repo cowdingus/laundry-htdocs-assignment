@@ -114,26 +114,19 @@ if ($_POST) {
 		exit();
 	}
 
+	for ($i=0; $i < count($id_pakets); $i++) { 
+		# code...
+	}
+
 	$query_transaksi = mysqli_query($conn, "INSERT INTO transaksi (id_member, id_user, tgl, batas_waktu, tgl_bayar, status, dibayar) VALUES
 		('$id_member', '$id_user', '$tgl', '$batas_waktu', '$tgl_bayar', '$status', '$dibayar')");
 
 	$id_transaksi = mysqli_insert_id($conn);
 
-	$is_all_ok = true;
-	for ($i = 0; $i < count($id_pakets); $i++) {
-		$id_paket = $id_pakets[$i];
-		$qty = $qtys[$i];
-
-		$query_detail_transaksi = mysqli_query($conn, "INSERT INTO detail_transaksi (id_transaksi, id_paket, qty) VALUES
+	$query_detail_transaksi = mysqli_query($conn, "INSERT INTO detail_transaksi (id_transaksi, id_paket, qty) VALUES
 		('$id_transaksi', '$id_paket', '$qty')");
 
-		if (!$query_detail_transaksi) {
-			$is_all_ok = false;
-			break;
-		}
-	}
-
-	if ($query_transaksi && $is_all_ok) {
+	if ($query_transaksi && $query_detail_transaksi) {
 		warn("Berhasil menambahkan paket");
 		redirectTo("index.php");
 	} else {
