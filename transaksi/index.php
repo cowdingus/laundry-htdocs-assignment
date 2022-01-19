@@ -71,12 +71,10 @@ function status_to_badge_converter($status)
 		<a href="tambah.php" class="btn btn-primary" id="add-anchor">+ Tambah Transaksi</a>
 
 		<?php
-		require_once "../components/list_table.php";
+		require_once "utils.php";
 		require_once "../koneksi.php";
 
-		$query = mysqli_query($conn, "SELECT t.id, m.nama as nama_member, t.tgl, t.batas_waktu, t.tgl_bayar, t.status, t.dibayar, u.nama as nama_kasir, p.jenis as paket, p.harga * d_t.qty as total FROM transaksi t, detail_transaksi d_t, paket p, member m, user u WHERE t.id_member = m.id AND t.id_user = u.id AND t.id = d_t.id_transaksi AND p.id = d_t.id_paket");
-
-		list_table($query, ["status" => "status_to_badge_converter", "dibayar" => "status_to_badge_converter"]);
+		list_table_transaksi();
 		?>
 
 	</main>
