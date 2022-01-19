@@ -11,7 +11,7 @@ function extract_as_table_data($data, $converters = null)
 	}
 }
 
-function list_table($mysqli_result, $converters = null)
+function report_table($mysqli_result, $converters = null)
 {
 	?>
 	<table class="table table-striped table-borderless mt-3">
